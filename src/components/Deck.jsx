@@ -87,27 +87,39 @@ function Deck() {
                     {deck.cards.map((card) => (
                         <div key={card.id} className="card">
                             <div className="card-body">
-                            <div className="card-content">
-                                <div className="question">{card.front}</div>
-                                <div className="answer">{card.back}</div>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <div className="card-content">
+                                            <div className="question">{card.front}</div>
+                                        </div>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="card-content">
+                                            <div className="answer">{card.back}</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="card-actions">
-                                <Link to={`/decks/${deckId}/cards/${card.id}/edit`} className="btn btn-secondary mr-2">
-                                Edit
+                            <div className="d-flex justify-content-end m-2">
+                                <Link
+                                    to={`/decks/${deckId}/cards/${card.id}/edit`}
+                                    className="btn btn-secondary mr-2"
+                                >
+                                    Edit
                                 </Link>
-                                <button className="btn btn-danger" onClick={() => handleDeleteCard(card.id)}>
-                                Delete
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => handleDeleteCard(card.id)}
+                                >
+                                    Delete
                                 </button>
-                            </div>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
         </div>
-         
-    )
-
+    );
 }
 
 export default Deck
