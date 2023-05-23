@@ -31,8 +31,7 @@ function Home() {
 
   return (
     <div>
-      <Link to="/decks/new" className="btn btn-secondary">Create Deck</Link>
-      <hr />
+      <Link to="/decks/new" className="btn btn-secondary mb-2">Create Deck</Link>
       {decks.length === 0 ? (
         <p>No decks found. Create a new deck to get started.</p>
       ) : (
