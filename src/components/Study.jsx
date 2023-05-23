@@ -56,6 +56,10 @@ function Study() {
   }
 
   if (deck.cards.length <= 2) {
+
+    const cardCountText =
+      deck.cards.length === 1 ? "is 1 card" : `are ${deck.cards.length} cards`;
+
     return (
       <div>
         <nav aria-label="breadcrumb">
@@ -74,7 +78,7 @@ function Study() {
         <h2>{deck.name}: Study</h2>
         <h3>Not enough Cards</h3>
         <p>
-          {`You need at least 3 cards to study. There are ${deck.cards.length} cards in this deck`}
+          {`You need at least 3 cards to study. There ${cardCountText} in this deck.`}
         </p>
         <Link to={`/decks/${deck.id}/cards/new`} className="btn btn-primary">
           Add Cards
