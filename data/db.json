@@ -1,4 +1,64 @@
 {
-  "decks": [],
-  "cards": []
+  "decks": [
+    {
+      "id": 1,
+      "name": "Rendering in React",
+      "description": "React's component structure allows for quickly building a complex web application that relies on DOM manipulation"
+    },
+    {
+      "id": 2,
+      "name": "deck 2",
+      "description": "deck 2 desc"
+    }
+  ],
+  "cards": [
+    {
+      "id": 1,
+      "front": "Differentiate between Real DOM and",
+      "back": "Virtual DOM updates are faster but do not directly update",
+      "deckId": 1
+    },
+    {
+      "id": 2,
+      "front": "asdfen Real DOM and Virtual DOM.",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML",
+      "deckId": 1
+    },
+    {
+      "id": 3,
+      "front": "12312Real DOM and Virtual DOM.",
+      "back": "Virtual DOM updates are faster but do not directly update the HTML",
+      "deckId": 1
+    },
+    {
+      "id": 1,
+      "front": "c1d2",
+      "back": "c1d2qwe",
+      "deckId": 2
+    },
+    {
+      "id": 2,
+      "front": "c2d2",
+      "back": "Vc2d2",
+      "deckId": 2
+    },
+    {
+      "id": 3,
+      "front": "c3d2",
+      "back": "Vc3d2",
+      "deckId": 2
+    },
+    {
+      "id": 4,
+      "front": "c4d2",
+      "back": "c4d212312313",
+      "deckId": 2
+    },
+    {
+      "front": "sdfsdfsdf",
+      "back": "sdfsdfsdfsdf",
+      "deckId": 1,
+      "id": 5
+    }
+  ]
 }
