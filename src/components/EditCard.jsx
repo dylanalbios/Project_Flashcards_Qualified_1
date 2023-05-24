@@ -124,7 +124,7 @@ function EditCard() {
                     Cancel
                 </button>
                 <button type="submit" className="btn btn-primary">
-                    Sumbit
+                    Submit
                 </button>
             </form>
         </div>
