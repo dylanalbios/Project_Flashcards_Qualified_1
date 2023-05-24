@@ -1,53 +1,66 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { createCard, readDeck } from "../utils/api";
+import { createCard, readCard, readDeck, updateCard } from "../utils/api";
 
 function AddCard() {
     const history = useHistory();
-    const [front, setFront] = useState("");
-    const [back, setBack] = useState("");
-    const { deckId } = useParams();
-    const [deck, setDeck] = useState({});
+    const { deckId, cardId } = useParams();
+    const [deck, setDeck] = useState(null);
+    const [card, setCard] = useState({
+        front: "",
+        back: "",
+    });
 
     useEffect(() => {
-        const abortController = new AbortController();
-    
-        const loadDeck = async () => {
-          try {
-            const response = await readDeck(deckId, abortController.signal);
-            setDeck(response);
-          } catch (error) {
-            if (!abortController.signal.aborted) {
-              console.error("Error:", error);
-            }
-          }
-        };
-    
         loadDeck();
-    
-        return () => {
-          abortController.abort();
-        };
-      }, [deckId]);
+        if (cardId) {
+            loadCard();
+        }
+    }, [cardId]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const loadDeck = async () => {
         try {
-            const newCard = {
-                front,
-                back,
-                deckId: deckId,
-            };
-            await createCard(deckId, newCard);
-            history.push(`/decks/${deckId}`);
-        }   catch (error) {
-            console.error("Error creating card:", error);
+            const loadedDeck = await readDeck(deckId);
+            setDeck(loadedDeck);
+        } catch (error) {
+            console.error("Error loading deck:", error);
         }
     };
 
-    const handleDone = () => {
-        history.push(`/decks/${deckId}`);
+    const loadCard = async () => {
+        try {
+            const loadedCard = await readCard(cardId);
+            setCard(loadedCard);
+        } catch (error) {
+            console.error("Error loading card:", error);
+        }
     };
+
+    const handleChange = (event) => {
+        setCard({
+        ...card,
+        [event.target.name]: event.target.value,
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (cardId) {
+            await updateCard(card);
+        } else {
+            await createCard(deckId, card);
+            setCard({ front: "", back: "" });
+        }
+
+        if (cardId) {
+            history.push(`/decks/${deckId}`);
+        }
+    };
+
+    if (!deck) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <div>
@@ -60,48 +73,53 @@ function AddCard() {
                         <Link to={`/decks/${deckId}`}>{deck.name}</Link>
                     </li>
                     <li className="breadcrumb-item active" aria-current="page">
-                        Add Card
+                        {cardId ? "Edit Card" : "Add Card"}
                     </li>
                 </ol>
             </nav>
-            <h1>{deck.name}: Add Card</h1>
+            <h2>{cardId ? "Edit Card" : "Add Card"}</h2>
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="front" className="form-label">
-                        Front
-                    </label>
+                <div className="form-group">
+                    <label htmlFor="front">Front</label>
                     <textarea
-                        className="form-control"
                         id="front"
-                        rows="3"
-                        value={front}
-                        onChange={(e) => setFront(e.target.value)}
-                        placeholder="Front side of card"
-                        required
-                    ></textarea>
-                </div>
-                <div className="mb-3">
-                <label htmlFor="back" className="form-label">
-                        Back
-                    </label>
-                    <textarea
+                        name="front"
                         className="form-control"
-                        id="back"
-                        rows="3"
-                        value={back}
-                        onChange={(e) => setBack(e.target.value)}
-                        placeholder="Back side of card"
+                        rows="4"
+                        placeholder="Front side of the card"
+                        value={card.front}
+                        onChange={handleChange}
                         required
                     ></textarea>
                 </div>
-                <button type="button" className="btn btn-secondary mr-2" onClick={handleDone}>
-                    Done
-                </button>
+                <div className="form-group">
+                    <label htmlFor="back">Back</label>
+                    <textarea
+                        id="back"
+                        name="back"
+                        className="form-control"
+                        rows="4"
+                        placeholder="Back side of the card"
+                        value={card.back}
+                        onChange={handleChange}
+                        required
+                    ></textarea>
+                </div>
+                {!cardId && (
+                    <button
+                        type="button"
+                        className="btn btn-secondary mr-2"
+                        onClick={() => history.push(`/decks/${deckId}`)}
+                    >
+                        Done
+                    </button>
+                )}
                 <button type="submit" className="btn btn-primary">
                     Save
                 </button>
             </form>
         </div>
-    )
+    );
 }
+
 export default AddCard;
